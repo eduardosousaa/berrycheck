@@ -1,2 +1,2 @@
 # berrycheck
- Pacote python de cotação de moedas e de ações das principais empresas brasileiras. 
+ Pacote python de cotacao de moedas e de acoes das principais empresas brasileiras. 
