@@ -4,7 +4,7 @@ with open("README.md", "r") as arq:
     readme = arq.read()
 
 setup(name='berrycheck',
-    version='1.0.1',
+    version='1.0.2',
     license='MIT License',
     author='Eduardo de Sousa',
     long_description=readme,

@@ -18,7 +18,7 @@ class BerryCheck():
         Returns:
             float: valor convertido para a moeda especificada, com duas casas decimais.
         """
-        cotacao_dolar = BerryCheck.obtem_cotacao(moeda, moeda2)["cotacao"]
+        cotacao_dolar = self.obtem_cotacao(moeda, moeda2)["cotacao"]
         resultado = cotacao_dolar * valor_em_dolares
         return float(f'{resultado:.2f}')
 
