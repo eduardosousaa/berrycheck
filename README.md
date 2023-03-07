@@ -8,13 +8,13 @@ Acesse: https://github.com/eduardosousaa/berrycheck
 * Fornecer aos usuarios uma maneira facil e acessível de obter cotacoes atualizadas de varias moedas, incluindo as principais moedas do mundo, para fins de negociacao, investimento ou outras finalidades financeiras. <br>
 * Oferecer um pacote facil de usar e bem documentada que permite aos usuarios integrar facilmente as cotacoes de moedas em seus proprios projetos e aplicativos. <br>
 * Permitir que os usuarios calculem rapidamente o valor de uma moeda em relacao a outra com base nas cotações mais recentes, facilitando a conversão de moedas para fins de viagens, compras internacionais ou outras necessidades pessoais ou comerciais. <br>
-* Fornecer ações atualizadas das principais empresas brasileiras. <br>
+* Fornecer valores de acoes atualizadas das principais empresas brasileiras. <br>
 * Permite tambem o calculo de acoes das empresas. <br>
 
 # Funcionalidades
-* Obter cotações de varias moedas em tempo real. <br>
+* Obter cotacoes de varias moedas em tempo real. <br>
 * Converter valores entre diferentes moedas. <br>
-* Obtém os valores das acoes de uma lista de empresas. <br>
+* Obtem os valores das acoes de uma lista de empresas. <br>
 * Calcula o valor total de acoes de uma empresa. <br>
 
 # Como usar
