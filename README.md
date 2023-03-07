@@ -1,21 +1,21 @@
 # Bem vindo ao berrycheck
 
-# Descrição
+# Descricao
 Pacote python de cotacao de moedas e valores de acoes das principais empresas brasileiras. <br>
 Acesse: https://github.com/eduardosousaa/berrycheck
 
 # Objetivos
-* Fornecer aos usuarios uma maneira facil e acessível de obter cotacoes atualizadas de varias moedas, incluindo as principais moedas do mundo, para fins de negociacao, investimento ou outras finalidades financeiras. <br>
+* Fornecer aos usuarios uma maneira facil e acessivel de obter cotacoes atualizadas de varias moedas, incluindo as principais moedas do mundo, para fins de negociacao, investimento ou outras finalidades financeiras. <br>
 * Oferecer um pacote facil de usar e bem documentada que permite aos usuarios integrar facilmente as cotacoes de moedas em seus proprios projetos e aplicativos. <br>
-* Permitir que os usuarios calculem rapidamente o valor de uma moeda em relacao a outra com base nas cotações mais recentes, facilitando a conversão de moedas para fins de viagens, compras internacionais ou outras necessidades pessoais ou comerciais. <br>
+* Permitir que os usuarios calculem rapidamente o valor de uma moeda em relacao a outra com base nas cotacoes mais recentes, facilitando a conversao de moedas para fins de viagens, compras internacionais ou outras necessidades pessoais ou comerciais. <br>
 * Fornecer valores de acoes atualizadas das principais empresas brasileiras. <br>
 * Permite tambem o calculo de acoes das empresas. <br>
 
 # Funcionalidades
 * Obter cotacoes de varias moedas em tempo real. <br>
 * Converter valores entre diferentes moedas. <br>
-* Obtem os valores das acoes de uma lista de empresas. <br>
-* Calcula o valor total de acoes de uma empresa. <br>
+* Obter os valores das acoes de uma lista de empresas. <br>
+* Calcular o valor de acoes de uma empresa. <br>
 
 # Como usar
 Siga os passos a seguir
@@ -39,29 +39,31 @@ Siga os passos a seguir
 ```python
     cotacao_dolar = x.obtem_cotacao("USD", "BRL")["cotacao"]
     cotacao_euro = x.obtem_cotacao("EUR", "BRL")["cotacao"]
-    cotacao_libra = x.obtem_cotacao("GBP", "BRL")["cotacao"] 
+    cotacao_libra = x.obtem_cotacao("GBP", "BRL")["cotacao"]
+    cotacao_bitcoin = x.obtem_cotacao('BTC', 'BRL')["cotacao"]
 ```
 
 ## Obter cotacao, maxima, minima e variacao <br>
 ```python
     cotacao = x.obtem_cotacao("USD", "BRL")
 
-    print("Cotação:", cotacao["cotacao"])
-    print("Máximo:", cotacao["maximo"])
-    print("Mínimo:", cotacao["minimo"])
-    print("Variação:", cotacao["variacao"])
+    print("Cotacao:", cotacao["cotacao"])
+    print("Maximo:", cotacao["maximo"])
+    print("Minimo:", cotacao["minimo"])
+    print("Variacao:", cotacao["variacao"])
 ```
 
 ## Converter moedas <br>
 ```python
     valor_em_reais = x.converte_moeda('USD', 'BRL', 100)
+    valor_em_reais = x.converte_moeda('EUR', 'BRL', 100)
 ```
 
 # Codigos das moedas <br>
 Veja a lista completa de combinacoes em: https://economia.awesomeapi.com.br/xml/available <br>
 Veja a lista de nomes das moedas em: https://economia.awesomeapi.com.br/xml/available/uniq <br>
 
-## Obter valores de ações das empresas <br>
+## Obter valores de acoes das empresas <br>
 ```python
     valores_acoes = x.obter_valores_acoes(["VALE3.SAO", "PETR4.SAO"])
 ```

@@ -18,6 +18,8 @@ class BerryCheck():
         Returns:
             float: valor convertido para a moeda especificada, com duas casas decimais.
         """
+        if valor_em_dolares < 0:
+            raise ValueError("O valor nao pode ser negativo")
         cotacao_dolar = self.obtem_cotacao(moeda, moeda2)["cotacao"]
         resultado = cotacao_dolar * valor_em_dolares
         return float(f'{resultado:.2f}')
@@ -38,6 +40,8 @@ class BerryCheck():
         Raises:
             ValueError: caso não seja possível obter o valor da ação para a empresa.
         """
+        if quantidade <= 0:
+            raise ValueError("A quantidade de acoes deve ser maior que zero")
         valor_acao = valores_acoes.get(empresa, {}).get('valor')
         if valor_acao is None:
             raise ValueError(f"Não foi possível obter o valor da ação para a empresa {empresa}")
@@ -59,6 +63,8 @@ class BerryCheck():
             - variacao (float): A variação da cotação em relação ao valor anterior.
         """
         requisicao = requests.get(f"https://economia.awesomeapi.com.br/last/{moeda}-{moeda2}")
+        if requisicao.status_code != 200:
+            raise ConnectionError("Nao foi possivel obter a cotacao da moeda")
         requisicao_dic = requisicao.json()
 
         cotacao = requisicao_dic[f"{moeda}{moeda2}"]["bid"]
@@ -68,6 +74,15 @@ class BerryCheck():
 
         cotacao = float(cotacao)
         cotacao = round(cotacao, 2)
+
+        maximo = float(maximo)
+        maximo = round(maximo, 2)
+
+        minimo = float(minimo)
+        minimo = round(minimo, 2)
+
+        variacao = float(variacao)
+        variacao = round(variacao, 2)
 
         return {
             "cotacao": float(cotacao),
@@ -91,6 +106,9 @@ class BerryCheck():
             um dicionário contendo as seguintes informações:
             - valor (float): O valor atual da ação da empresa.
         """
+        if len(empresas) == 0:
+            raise ValueError("A lista de empresas nao pode estar vazia")
+
         resultados: Dict[str, Dict[str, float]] = {}
         for empresa in empresas:
             url = f"https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol={empresa}&apikey={api_key}"
