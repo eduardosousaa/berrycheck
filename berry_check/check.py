@@ -11,9 +11,12 @@ class BerryCheck():
         Converte um valor de uma moeda para outra.
 
         Parameters:
-            moeda (str): código da moeda que será convertida.
-            moeda2 (str): código da moeda para qual será convertida.
-            valor_em_dolares (float): valor a ser convertido em dólares.
+            moeda : str 
+                código da moeda que será convertida.
+            moeda2 : str
+                código da moeda para qual será convertida.
+            valor_em_dolares : float 
+                valor a ser convertido em dólares.
 
         Returns:
             float: valor convertido para a moeda especificada, com duas casas decimais.
@@ -30,9 +33,12 @@ class BerryCheck():
         Calcula o valor total de ações de uma empresa.
 
         Parameters:
-            empresa (str): nome da empresa para a qual será calculado o valor total das ações.
-            quantidade (float): quantidade de ações da empresa.
-            valores_acoes (Dict[str, Dict[str, float]]): dicionário contendo os valores das ações das empresas.
+            empresa : str
+                nome da empresa para a qual será calculado o valor total das ações.
+            quantidade : float
+                quantidade de ações da empresa.
+            valores_acoes : (Dict[str, Dict[str, float]])
+                dicionário contendo os valores das ações das empresas.
 
         Returns:
             float: valor total das ações da empresa.
@@ -52,8 +58,10 @@ class BerryCheck():
         Obtém a cotação atual de uma moeda em relação a outra.
 
         Parameters:
-            moeda (str): A sigla da moeda desejada.
-            moeda2 (str): A sigla da moeda de referência.
+            moeda : str
+                A sigla da moeda desejada.
+            moeda2 : str
+                A sigla da moeda de referência.
 
         Returns:
             Um dicionário contendo as seguintes informações:
@@ -98,8 +106,10 @@ class BerryCheck():
         Obtém os valores das ações de uma lista de empresas.
 
         Parameters:
-            empresas (List[str]): A lista de siglas das empresas desejadas.
-            api_key (str): A chave da API usada para acessar os valores das ações (padrão é "SCL4MVJ4B7C1SC3M").
+            empresas : List[str]
+                A lista de siglas das empresas desejadas.
+            api_key : str
+                A chave da API usada para acessar os valores das ações (padrão é "SCL4MVJ4B7C1SC3M").
 
         Returns:
             Um dicionário contendo as informações das empresas solicitadas. Cada chave é uma sigla de empresa e cada valor é
