@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>berry_check.check &mdash; BerryCheck Documentation 1.0.0 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            BerryCheck Documentation
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">berry_check</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">BerryCheck Documentation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">berry_check.check</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for berry_check.check</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">yfinance</span> <span class="k">as</span> <span class="nn">yf</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+
+
+<div class="viewcode-block" id="BerryCheck"><a class="viewcode-back" href="../../berry_check.html#berry_check.check.BerryCheck">[docs]</a><span class="k">class</span> <span class="nc">BerryCheck</span><span class="p">():</span>
+
+<div class="viewcode-block" id="BerryCheck.converte_moeda"><a class="viewcode-back" href="../../berry_check.html#berry_check.check.BerryCheck.converte_moeda">[docs]</a>    <span class="k">def</span> <span class="nf">converte_moeda</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">moeda</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">moeda2</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">valor_em_dolares</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Converte um valor de uma moeda para outra.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            moeda (str): código da moeda que será convertida.</span>
+<span class="sd">            moeda2 (str): código da moeda para qual será convertida.</span>
+<span class="sd">            valor_em_dolares (float): valor a ser convertido em dólares.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            float: valor convertido para a moeda especificada, com duas casas decimais.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">valor_em_dolares</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;O valor nao pode ser negativo&quot;</span><span class="p">)</span>
+        <span class="n">cotacao_dolar</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">obtem_cotacao</span><span class="p">(</span><span class="n">moeda</span><span class="p">,</span> <span class="n">moeda2</span><span class="p">)[</span><span class="s2">&quot;cotacao&quot;</span><span class="p">]</span>
+        <span class="n">resultado</span> <span class="o">=</span> <span class="n">cotacao_dolar</span> <span class="o">*</span> <span class="n">valor_em_dolares</span>
+        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">resultado</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="BerryCheck.calcular_valor_acoes"><a class="viewcode-back" href="../../berry_check.html#berry_check.check.BerryCheck.calcular_valor_acoes">[docs]</a>    <span class="k">def</span> <span class="nf">calcular_valor_acoes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">empresa</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">quantidade</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">valores_acoes</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calcula o valor total de ações de uma empresa.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            empresa (str): nome da empresa para a qual será calculado o valor total das ações.</span>
+<span class="sd">            quantidade (float): quantidade de ações da empresa.</span>
+<span class="sd">            valores_acoes (Dict[str, Dict[str, float]]): dicionário contendo os valores das ações das empresas.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            float: valor total das ações da empresa.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: caso não seja possível obter o valor da ação para a empresa.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">quantidade</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;A quantidade de acoes deve ser maior que zero&quot;</span><span class="p">)</span>
+        <span class="n">valor_acao</span> <span class="o">=</span> <span class="n">valores_acoes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">empresa</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;valor&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">valor_acao</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Não foi possível obter o valor da ação para a empresa </span><span class="si">{</span><span class="n">empresa</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">quantidade</span> <span class="o">*</span> <span class="n">valor_acao</span></div>
+
+<div class="viewcode-block" id="BerryCheck.obtem_cotacao"><a class="viewcode-back" href="../../berry_check.html#berry_check.check.BerryCheck.obtem_cotacao">[docs]</a>    <span class="k">def</span> <span class="nf">obtem_cotacao</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">moeda</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">moeda2</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Obtém a cotação atual de uma moeda em relação a outra.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            moeda (str): A sigla da moeda desejada.</span>
+<span class="sd">            moeda2 (str): A sigla da moeda de referência.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Um dicionário contendo as seguintes informações:</span>
+<span class="sd">            - cotacao (float): O valor da cotação atual da moeda em relação à moeda de referência.</span>
+<span class="sd">            - maximo (float): O valor máximo que a moeda alcançou no dia.</span>
+<span class="sd">            - minimo (float): O valor mínimo que a moeda alcançou no dia.</span>
+<span class="sd">            - variacao (float): A variação da cotação em relação ao valor anterior.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">requisicao</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;https://economia.awesomeapi.com.br/last/</span><span class="si">{</span><span class="n">moeda</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">moeda2</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">requisicao</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="mi">200</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ConnectionError</span><span class="p">(</span><span class="s2">&quot;Nao foi possivel obter a cotacao da moeda&quot;</span><span class="p">)</span>
+        <span class="n">requisicao_dic</span> <span class="o">=</span> <span class="n">requisicao</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+
+        <span class="n">cotacao</span> <span class="o">=</span> <span class="n">requisicao_dic</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">moeda</span><span class="si">}{</span><span class="n">moeda2</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">][</span><span class="s2">&quot;bid&quot;</span><span class="p">]</span>
+        <span class="n">maximo</span> <span class="o">=</span> <span class="n">requisicao_dic</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">moeda</span><span class="si">}{</span><span class="n">moeda2</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">][</span><span class="s2">&quot;high&quot;</span><span class="p">]</span>
+        <span class="n">minimo</span> <span class="o">=</span> <span class="n">requisicao_dic</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">moeda</span><span class="si">}{</span><span class="n">moeda2</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">][</span><span class="s2">&quot;low&quot;</span><span class="p">]</span>
+        <span class="n">variacao</span> <span class="o">=</span> <span class="n">requisicao_dic</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">moeda</span><span class="si">}{</span><span class="n">moeda2</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">][</span><span class="s2">&quot;varBid&quot;</span><span class="p">]</span>
+
+        <span class="n">cotacao</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">cotacao</span><span class="p">)</span>
+        <span class="n">cotacao</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">cotacao</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+        <span class="n">maximo</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">maximo</span><span class="p">)</span>
+        <span class="n">maximo</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">maximo</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+        <span class="n">minimo</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">minimo</span><span class="p">)</span>
+        <span class="n">minimo</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">minimo</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+        <span class="n">variacao</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">variacao</span><span class="p">)</span>
+        <span class="n">variacao</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">variacao</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;cotacao&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">cotacao</span><span class="p">),</span>
+            <span class="s2">&quot;maximo&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">maximo</span><span class="p">),</span>
+            <span class="s2">&quot;minimo&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">minimo</span><span class="p">),</span>
+            <span class="s2">&quot;variacao&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">variacao</span><span class="p">)</span>
+        <span class="p">}</span></div>
+
+
+
+<div class="viewcode-block" id="BerryCheck.obter_valores_acoes"><a class="viewcode-back" href="../../berry_check.html#berry_check.check.BerryCheck.obter_valores_acoes">[docs]</a>    <span class="k">def</span> <span class="nf">obter_valores_acoes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">empresas</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">api_key</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;SCL4MVJ4B7C1SC3M&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Obtém os valores das ações de uma lista de empresas.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            empresas (List[str]): A lista de siglas das empresas desejadas.</span>
+<span class="sd">            api_key (str): A chave da API usada para acessar os valores das ações (padrão é &quot;SCL4MVJ4B7C1SC3M&quot;).</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Um dicionário contendo as informações das empresas solicitadas. Cada chave é uma sigla de empresa e cada valor é</span>
+<span class="sd">            um dicionário contendo as seguintes informações:</span>
+<span class="sd">            - valor (float): O valor atual da ação da empresa.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">empresas</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;A lista de empresas nao pode estar vazia&quot;</span><span class="p">)</span>
+
+        <span class="n">resultados</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">empresa</span> <span class="ow">in</span> <span class="n">empresas</span><span class="p">:</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;https://www.alphavantage.co/query?function=GLOBAL_QUOTE&amp;symbol=</span><span class="si">{</span><span class="n">empresa</span><span class="si">}</span><span class="s2">&amp;apikey=</span><span class="si">{</span><span class="n">api_key</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">requisicao</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">requisicao</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
+                <span class="n">requisicao_json</span> <span class="o">=</span> <span class="n">requisicao</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+                <span class="n">valor</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">requisicao_json</span><span class="p">[</span><span class="s2">&quot;Global Quote&quot;</span><span class="p">][</span><span class="s2">&quot;05. price&quot;</span><span class="p">])</span>
+                <span class="n">resultados</span><span class="p">[</span><span class="n">empresa</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;valor&quot;</span><span class="p">:</span> <span class="n">valor</span><span class="p">}</span>
+        <span class="k">return</span> <span class="n">resultados</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Carlos Henrique; Eduardo de Sousa;.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
