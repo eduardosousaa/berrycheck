@@ -16,7 +16,7 @@ class BerryCheck():
             valor_em_dolares (float): valor a ser convertido em dólares.
 
         Returns:
-            float: valor convertido para a moeda especificada, com duas casas decimais.
+            float: valor convertido para a moeda especificada, com duas casas decimal.
         """
         if valor_em_dolares < 0:
             raise ValueError("O valor nao pode ser negativo")
