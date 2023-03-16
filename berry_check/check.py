@@ -16,7 +16,7 @@ class BerryCheck():
             moeda2 : str
                 código da moeda para qual será convertida.
             valor_em_dolares : float 
-                valor a ser convertido em dólares.
+                valor a ser convertido em dólares
 
         Returns:
             float: valor convertido para a moeda especificada, com duas casas decimais.
